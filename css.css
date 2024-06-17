@@ -1,0 +1,25 @@
+/* Style the overall layout and appearance of the reservation system */
+body {
+    font-family: sans-serif;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Styles for specific components (new reservation, modify reservation, etc.) */
+.reservation-form {
+    /* Styles for the form to create or modify reservations */
+}
+
+.reservation-list {
+    /* Styles for displaying the list of reservations */
+}
+
+.filter-options {
+    /* Styles for the filters (date, service, customer name) */
+}
