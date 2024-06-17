@@ -1,0 +1,40 @@
+@RestController
+@RequestMapping("/api/reservas") // Prefijo de ruta más descriptivo
+public class ReservasController {
+
+    @Autowired
+    private ReservaRepository reservaRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ServicioRepository servicioRepository;
+
+    @PostMapping
+    public Reserva crearReserva(@Valid @RequestBody ReservaDTO reservaDTO) { // Validar datos de entrada
+        Cliente cliente = clienteRepository.findById(reservaDTO.getClienteId())
+                .orElseThrow(() -> new RecursoNoEncontradoException("Cliente no encontrado"));
+
+        Servicio servicio = servicioRepository.findById(reservaDTO.getServicioId())
+                .orElseThrow(() -> new RecursoNoEncontradoException("Servicio no encontrado"));
+
+        Reserva reserva = new Reserva();
+        reserva.setCliente(cliente);
+        reserva.setServicio(servicio);
+        reserva.setFechaReserva(reservaDTO.getFechaReserva());
+        reserva.setPrecioTotal(servicio.getPrecio());
+
+        return reservaRepository.save(reserva);
+    }
+
+    @PutMapping("/{id}")
+    public Reserva modificarReserva(@PathVariable Long id, @Valid @RequestBody ReservaDTO reservaDTO) {
+        Reserva reserva = reservaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Reserva no encontrada"));
+
+        reserva.setFechaReserva(reservaDTO.getFechaReserva());
+
+        return reservaRepository.save(reserva);
+    }
+}
